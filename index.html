@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#3498db">
+    <meta name="description" content="一个功能完整的TODO管理Web应用">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+    <title>TODO应用 - 任务管理</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1 class="app-title">📝 TODO应用</h1>
+            <button id="theme-toggle" class="theme-toggle-btn" title="切换主题">
+                🌙
+            </button>
+        </header>
+
+        <section class="task-input-section">
+            <form id="task-form" class="task-form">
+                <div class="form-row">
+                    <input type="text" id="task-title" class="task-input" placeholder="任务标题" required>
+                </div>
+                <div class="form-row">
+                    <textarea id="task-description" class="task-textarea" placeholder="任务描述（可选）" rows="2"></textarea>
+                </div>
+                <div class="form-row form-grid">
+                    <div class="form-group">
+                        <label for="task-category">分类</label>
+                        <div style="display: flex; gap: 5px;">
+                            <select id="task-category" class="form-select" style="flex: 1;">
+                                <option value="">选择分类</option>
+                            </select>
+                            <button type="button" class="btn btn-secondary" data-action="manage-categories" title="管理分类">⚙️</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-priority">优先级</label>
+                        <select id="task-priority" class="form-select">
+                            <option value="low">低</option>
+                            <option value="medium" selected>中</option>
+                            <option value="high">高</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-due-date">截止日期</label>
+                        <input type="date" id="task-due-date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="task-recurrence">重复</label>
+                        <select id="task-recurrence" class="form-select">
+                            <option value="">不重复</option>
+                            <option value="daily">每天</option>
+                            <option value="weekly">每周</option>
+                            <option value="monthly">每月</option>
+                            <option value="yearly">每年</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="task-reminder">提醒</label>
+                        <select id="task-reminder" class="form-select">
+                            <option value="">不提醒</option>
+                            <option value="0">截止时</option>
+                            <option value="15">提前15分钟</option>
+                            <option value="60">提前1小时</option>
+                            <option value="1440">提前1天</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <input type="text" id="task-tags" class="task-input" placeholder="标签（用逗号分隔）">
+                </div>
+                <div class="form-row">
+                    <button type="submit" class="btn btn-primary">添加任务</button>
+                    <button type="button" class="btn btn-secondary" id="use-template-btn">📋 使用模板</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="filter-section">
+            <div class="filter-row">
+                <input type="text" id="search-input" class="search-input" placeholder="🔍 搜索任务...">
+                <div class="view-toggle">
+                    <button class="view-btn active" data-view="list" title="列表视图">☰</button>
+                    <button class="view-btn" data-view="board" title="看板视图">▦</button>
+                </div>
+            </div>
+            <div class="filter-row filter-controls">
+                <div class="filter-group">
+                    <label for="filter-category">分类</label>
+                    <select id="filter-category" class="filter-select">
+                        <option value="">全部</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-priority">优先级</label>
+                    <select id="filter-priority" class="filter-select">
+                        <option value="">全部</option>
+                        <option value="high">高</option>
+                        <option value="medium">中</option>
+                        <option value="low">低</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-status">状态</label>
+                    <select id="filter-status" class="filter-select">
+                        <option value="">全部</option>
+                        <option value="active">进行中</option>
+                        <option value="completed">已完成</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sort-by">排序</label>
+                    <select id="sort-by" class="filter-select">
+                        <option value="createdAt-desc">创建时间（最新）</option>
+                        <option value="createdAt-asc">创建时间（最早）</option>
+                        <option value="dueDate-asc">截止日期（最近）</option>
+                        <option value="priority-desc">优先级（高到低）</option>
+                        <option value="priority-asc">优先级（低到高）</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="task-list-section">
+            <div id="task-list" class="task-list">
+                <div class="empty-state">
+                    <p>暂无任务，开始添加您的第一个任务吧！</p>
+                </div>
+            </div>
+            <div id="board-view" class="board-view" style="display: none;">
+                <div class="board-column" data-status="todo">
+                    <div class="board-column-header">
+                        <h3>待办</h3>
+                        <span class="task-count">0</span>
+                    </div>
+                    <div class="board-column-content" data-status="todo"></div>
+                </div>
+                <div class="board-column" data-status="in-progress">
+                    <div class="board-column-header">
+                        <h3>进行中</h3>
+                        <span class="task-count">0</span>
+                    </div>
+                    <div class="board-column-content" data-status="in-progress"></div>
+                </div>
+                <div class="board-column" data-status="completed">
+                    <div class="board-column-header">
+                        <h3>已完成</h3>
+                        <span class="task-count">0</span>
+                    </div>
+                    <div class="board-column-content" data-status="completed"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="app-footer">
+            <div class="stats">
+                <span id="total-tasks">总计: 0 个任务</span>
+                <span id="completed-tasks">已完成: 0 个</span>
+                <span id="pending-tasks">进行中: 0 个</span>
+            </div>
+            <div class="actions">
+                <button id="export-btn" class="btn btn-secondary" title="导出数据">📤 导出</button>
+                <label for="import-file" class="btn btn-secondary" title="导入数据">
+                    📥 导入
+                    <input type="file" id="import-file" accept=".json" style="display: none;">
+                </label>
+            </div>
+        </footer>
+    </div>
+
+    <div id="category-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>管理分类</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="category-form">
+                    <div class="form-row">
+                        <input type="text" id="category-name" class="task-input" placeholder="分类名称" required>
+                        <input type="color" id="category-color" class="color-input" value="#3498db">
+                        <button type="submit" class="btn btn-primary">添加</button>
+                    </div>
+                </form>
+                <div id="category-list" class="category-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>编辑任务</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-form">
+                    <div class="form-row">
+                        <input type="text" id="edit-title" class="task-input" placeholder="任务标题" required>
+                    </div>
+                    <div class="form-row">
+                        <textarea id="edit-description" class="task-textarea" placeholder="任务描述（可选）" rows="3"></textarea>
+                    </div>
+                    <div class="form-row form-grid">
+                        <div class="form-group">
+                            <label for="edit-category">分类</label>
+                            <select id="edit-category" class="form-select">
+                                <option value="">选择分类</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-priority">优先级</label>
+                            <select id="edit-priority" class="form-select">
+                                <option value="low">低</option>
+                                <option value="medium">中</option>
+                                <option value="high">高</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-due-date">截止日期</label>
+                            <input type="date" id="edit-due-date" class="form-input">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" id="edit-tags" class="task-input" placeholder="标签（用逗号分隔）">
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                        <button type="button" class="btn btn-secondary modal-cancel">取消</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="template-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>选择任务模板</h2>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="template-list" class="template-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/task.js"></script>
+    <script src="js/filter.js"></script>
+    <script src="js/notification.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

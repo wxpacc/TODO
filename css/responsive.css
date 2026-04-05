@@ -1,0 +1,191 @@
+@media (max-width: 768px) {
+    .app-container {
+        padding: 15px;
+    }
+
+    .app-header {
+        padding: 15px 0;
+        margin-bottom: 20px;
+    }
+
+    .app-title {
+        font-size: 1.5rem;
+    }
+
+    .theme-toggle-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+    }
+
+    .task-input-section {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .filter-section {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+
+    .filter-controls {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .task-card {
+        padding: 15px;
+    }
+
+    .task-title {
+        font-size: 1.1rem;
+    }
+
+    .task-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .app-footer {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+    }
+
+    .stats {
+        justify-content: center;
+        order: 2;
+    }
+
+    .actions {
+        justify-content: center;
+        order: 1;
+        margin-bottom: 10px;
+    }
+
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+
+    .modal-header {
+        padding: 15px;
+    }
+
+    .modal-header h2 {
+        font-size: 1.3rem;
+    }
+
+    .modal-body {
+        padding: 15px;
+    }
+
+    .toast-container {
+        left: 10px;
+        right: 10px;
+    }
+
+    .toast {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .app-container {
+        padding: 10px;
+    }
+
+    .app-title {
+        font-size: 1.3rem;
+    }
+
+    .task-input-section {
+        padding: 15px;
+    }
+
+    .filter-controls {
+        grid-template-columns: 1fr;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+
+    .task-card {
+        padding: 12px;
+    }
+
+    .task-title {
+        font-size: 1rem;
+    }
+
+    .task-actions {
+        flex-direction: column;
+    }
+
+    .stats {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .actions .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .app-container {
+        padding: 25px;
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filter-controls {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1025px) {
+    .task-list {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+@media print {
+    .theme-toggle-btn,
+    .task-input-section,
+    .filter-section,
+    .app-footer,
+    .task-actions,
+    .modal {
+        display: none !important;
+    }
+
+    .app-container {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    .task-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+
+    .task-list {
+        grid-template-columns: 1fr;
+    }
+}
