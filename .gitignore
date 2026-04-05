@@ -1,0 +1,83 @@
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# 编辑器和IDE
+.vscode/
+.idea/
+.trae/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
+
+# 日志文件
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 依赖目录（如果将来使用npm/yarn）
+node_modules/
+bower_components/
+
+# 构建输出（如果将来使用构建工具）
+dist/
+build/
+out/
+.cache/
+.parcel-cache/
+
+# 环境变量文件
+.env
+.env.local
+.env.*.local
+
+# 临时文件
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+
+# 压缩文件
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# 测试覆盖率报告
+coverage/
+.nyc_output/
+
+# 文档生成
+docs/_build/
+
+# 备份文件
+*.backup
+*.old
+
+# PWA相关
+# Service Worker缓存文件
+sw.js.map
+workbox-*.js
+workbox-*.js.map
+
+# 数据备份文件
+*.json.backup
+todo-backup-*.json
+
+# 个人笔记和TODO
+NOTES.md
+TODO.md
